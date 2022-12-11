@@ -4,9 +4,23 @@ job "postgres" {
   type = "service"
   group "postgres" {
     count = 1
-
+    volume "persistence" {
+      type      = "host"
+      source    = "pg_data"
+      read_only = false
+    }
     task "postgres" {
       driver = "docker"
+      volume_mount {
+        volume      = "persistence"
+        destination = "/var/lib/postgresql/data"
+        read_only   = false
+      }
+      constraint {
+        attribute = "${meta.pg_host}"
+        operator  = "="
+        value     = "first_host"
+      }
       config {
         image = "postgres:15.1"
         network_mode = "host"
@@ -35,6 +49,7 @@ job "postgres" {
           }
         }
       }
+      /*
       service {
         name = "postgres"
         tags = ["postgres"]
@@ -47,6 +62,7 @@ job "postgres" {
           timeout  = "2s"
         }
       }
+      */
     }
     restart {
       attempts = 10

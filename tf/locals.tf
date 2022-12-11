@@ -3,14 +3,15 @@ locals {
     ns_postgres = {
       name = "postgres"
       descr = "postgres namespace"
-      quota = local.quota.pg.name
+      quota = ""
       meta = {
         owner = "xz"
         proj = "pg_dev"
       }
     }
   }
-
+  quota = {}
+/*
   quota = {
     pg = {
       name = "pg_limit"
@@ -24,4 +25,5 @@ locals {
      ]
    }
   }
+*/
 }

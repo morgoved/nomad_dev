@@ -8,3 +8,8 @@ module "ns" {
   PARAMS = local.NS
   depends_on = [ module.quota ]
 }
+
+resource "nomad_job" "app" {
+  jobspec = file("../postgres.nomad")
+  depends_on = [ module.ns ]
+}
