@@ -259,3 +259,15 @@ PGPASSWORD=$dbpass psql -h $extip -U root -p 5432 -a -q -f ./nomad/psql
 sed -i "s+\/\*++g" ./main.tf
 sed -i "s+\*\/++g" ./main.tf
 terraform apply -auto-approve
+
+echo "all done"
+echo "your bootstrap nomad token is $nomadtoken and located into ~/bootstrap"
+echo "for run terraform cd tf folder run source ~/nomadcred and after in run terraform apply"
+echo "nomad ui http://$extip:4646/"
+echo "consul ui http://$extip:8500/"
+echo "n8n ui https://n8n.$domain/"
+echo "$(cat ./nomad/n8n.nomad | grep BASIC_AUTH_USER) $(cat ./nomad/n8n.nomad | grep BASIC_AUTH_PASSWORD)"
+echo "nocodb ui https://nocodb.$domain/"
+
+
+
