@@ -1,4 +1,6 @@
 domain=$1
+email=$2
+dbpass=$3
 apt update
 apt install apt-transport-https ca-certificates curl software-properties-common -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -193,9 +195,34 @@ systemctl start nomad
 sleep 30
 
 export NOMAD_ADDR=http://$extip:4646
-nomad acl bootstrap > bootstrap
+nomad acl bootstrap > ~/bootstrap
 echo "-----------------------------------------------------nomad token located now  in this folder into bootstrap file--------------------------------------------------------------------"
-cat ./bootstrap
-nomadtoken=$(cat ./bootstrap | grep Secret | awk '{print $4}')
+cat ~/bootstrap
+nomadtoken=$(cat ~/bootstrap | grep Secret | awk '{print $4}')
+cat <<EOF > ~/nomadcred
+export NOMAD_TOKEN=$nomadtoken
+export NOMAD_ADDR=http://$extip:4646
+EOF
+cd tf
+sed -i "s+0000000000000+$nomadtoken+g" ./nomad/traefik.nomad
+sed -i "s+11111111111+$extip+g" ./nomad/traefik.nomad
+sed -i "s+xxxxx+$email+g" ./nomad/traefik.nomad
+sed -i "s+rootpassword+$dbpass+g" ./nomad/postgres.nomad
+sed -i "s+thstnm+$domain+g" ./nomad/nocodb.nomad
+sed -i "s+thstnm+$domain+g" ./nomad/n8n.nomad
+
+curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh | bash
+tfswitch
+source ~/nomadcred
+terraform init
+terraform apply -auto-approve
 
 
+echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+apt-get update
+apt-get install postgresql-client-12 -y
+PGPASSWORD=$dbpass psql -h $extip -U root -p 5432 -a -q -f ./nomad/psql
+sed -i "s+\/\*++g" ./main.tf
+sed -i "s+\*\/++g" ./main.tf
+terraform apply -auto-approve

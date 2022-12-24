@@ -1,0 +1,12 @@
+CREATE DATABASE nocodb;
+CREATE USER nocodb WITH PASSWORD 'nocodbpassword12345';
+GRANT ALL PRIVILEGES ON DATABASE "nocodb" to nocodb;
+\c nocodb
+GRANT ALL ON SCHEMA public TO nocodb;
+
+CREATE DATABASE n8n;
+CREATE USER n8n WITH PASSWORD 'n8npassword12345';
+GRANT ALL PRIVILEGES ON DATABASE "n8n" to n8n;
+\c n8n
+GRANT ALL ON SCHEMA public TO n8n;
+

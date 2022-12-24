@@ -10,21 +10,22 @@ module "ns" {
 }
 
 resource "nomad_job" "postgres" {
-  jobspec = file("../postgres.nomad")
+  jobspec = file("./nomad/postgres.nomad")
   depends_on = [ module.ns ]
 }
 
 resource "nomad_job" "traefik" {
-  jobspec = file("../traefik.nomad")
+  jobspec = file("./nomad/traefik.nomad")
   depends_on = [ module.ns ]
 }
-
+/*
 resource "nomad_job" "nocodb" {
-  jobspec = file("../nocodb.nomad")
+  jobspec = file("./nomad/nocodb.nomad")
   depends_on = [ module.ns, nomad_job.postgres, nomad_job.traefik ]
 }
 
 resource "nomad_job" "n8n" {
-  jobspec = file("../n8n.nomad")
+  jobspec = file("./nomad/n8n.nomad")
   depends_on = [ module.ns, nomad_job.postgres, nomad_job.traefik ]
 }
+*/
