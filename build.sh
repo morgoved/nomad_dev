@@ -15,7 +15,7 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 
 
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt update && apt install consul -y
 apt update && apt install nomad -y
 
