@@ -1,6 +1,6 @@
 job "postgres" {
   datacenters = ["dc1"]
-  namespace = "postgres"
+  namespace = "default"
   type = "service"
   group "postgres" {
     count = 1
@@ -49,9 +49,10 @@ job "postgres" {
           }
         }
       }
-      /*
+
       service {
         name = "postgres"
+        provider = "consul"
         tags = ["postgres"]
         port = "db"
 
@@ -62,7 +63,6 @@ job "postgres" {
           timeout  = "2s"
         }
       }
-      */
     }
     restart {
       attempts = 10
@@ -70,7 +70,6 @@ job "postgres" {
       delay = "25s"
       mode = "delay"
     }
-
   }
 
   update {
