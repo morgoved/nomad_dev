@@ -262,7 +262,7 @@ terraform apply -auto-approve
 
 echo "all done"
 echo "your bootstrap nomad token is $nomadtoken and located into ~/bootstrap"
-echo "for run terraform cd tf folder run source ~/nomadcred and after in run terraform apply"
+echo "for run terraform - cd tf folder, run source ~/nomadcred and after it, run terraform apply"
 echo "nomad ui http://$extip:4646"
 echo "consul ui http://$extip:8500"
 echo "traefik ui http://$extip:8080"
