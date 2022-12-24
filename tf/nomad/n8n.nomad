@@ -68,7 +68,7 @@ job "n8n" {
           "traefik.http.routers.n8n.tls=true",
           "traefik.http.routers.n8n.rule=Host(`n8n.thstnm`)",
           "traefik.http.routers.n8n.tls.certresolver=main",
-          "traefik.http.routers.n8n.tls.domains[0].main=n8n.hstnm"
+          "traefik.http.routers.n8n.tls.domains[0].main=n8n.thstnm"
         ]
         port = "web"
         check {
